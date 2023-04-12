@@ -18,6 +18,7 @@ export default function DoctorForm() {
         days,
         userId: JSON.parse(localStorage.getItem("user")).id,
         status: "pending",
+        role: "doctor"
       };
       const response = await AddDoctor(payload);
       if (response.success) {
