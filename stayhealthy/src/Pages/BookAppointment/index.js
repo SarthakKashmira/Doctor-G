@@ -5,10 +5,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { GetDoctorById } from "../../apicalls/doctors";
 import { showLoader } from "../../redux/loaderReducer";
 import moment from "moment";
-// import {
-//   BookDoctorAppointment,
-//   GetDoctorAppointmentsOnDate,
-// } from "../../apicalls/appointments";
+import {
+  BookDoctorAppointment,
+  GetDoctorAppointmentsOnDate,
+} from "../../apicalls/appointments";
 
 function BookAppointment() {
   const [problem = "", setProblem] = React.useState("");
@@ -24,6 +24,7 @@ function BookAppointment() {
     try {
       dispatch(showLoader(true));
       const response = await GetDoctorById(id);
+      console.log(response)
       if (response.success) {
         setDoctor(response.data);
       } else {
@@ -81,59 +82,60 @@ function BookAppointment() {
     });
   };
 
-//   const onBookAppointment = async () => {
-//     try {
-//       dispatch(showLoader(true));
-//       const payload = {
-//         doctorId: doctor.id,
-//         userId: JSON.parse(localStorage.getItem("user")).id,
-//         date,
-//         slot: selectedSlot,
-//         doctorName: `${doctor.firstName} ${doctor.lastName}`,
-//         userName: JSON.parse(localStorage.getItem("user")).name,
-//         bookedOn: moment().format("DD-MM-YYYY hh:mm A"),
-//         problem,
-//         status: "pending",
-//       };
-//       const response = await BookDoctorAppointment(payload);
-//       if (response.success) {
-//         message.success(response.message);
-//         navigate("/profile");
-//       } else {
-//         message.error(response.message);
-//       }
-//       dispatch(showLoader(false));
-//     } catch (error) {
-//       message.error(error.message);
-//       dispatch(showLoader(false));
-//     }
-//   };
+  const onBookAppointment = async () => {
+    try {
+      dispatch(showLoader(true));
+      const payload = {
+        doctorId: doctor.userId,
+        userId: JSON.parse(localStorage.getItem("user")).id,
+        date,
+        slot: selectedSlot,
+        doctorName: `${doctor.firstname} ${doctor.lastname}`,
+        userName: JSON.parse(localStorage.getItem("user")).name,
+        bookedOn: moment().format("DD-MM-YYYY hh:mm A"),
+        problem,
+        status: "pending",
+      };
+      console.log(payload)
+      const response = await BookDoctorAppointment(payload);
+      if (response.success) {
+        message.success(response.message);
+        navigate("/profile");
+      } else {
+        message.error(response.message);
+      }
+      dispatch(showLoader(false));
+    } catch (error) {
+      message.error(error.message);
+      dispatch(showLoader(false));
+    }
+  };
 
-//   const getBookedSlots = async () => {
-//     try {
-//       dispatch(showLoader(true));
-//       const response = await GetDoctorAppointmentsOnDate(id, date);
-//       dispatch(showLoader(false));
-//       if (response.success) {
-//         console.log(response.data);
-//         setBookedSlots(response.data);
-//       } else {
-//         message.error(response.message);
-//       }
-//     } catch (error) {
-//       dispatch(showLoader(false));
-//       message.error(error.message);
-//     }
-//   };
+  const getBookedSlots = async () => {
+    try {
+      dispatch(showLoader(true));
+      const response = await GetDoctorAppointmentsOnDate(id, date);
+      dispatch(showLoader(false));
+      if (response.success) {
+        console.log(response.data);
+        setBookedSlots(response.data);
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      dispatch(showLoader(false));
+      message.error(error.message);
+    }
+  };
   useEffect(() => {
     getData();
   }, [id]);
 
-//   useEffect(() => {
-//     if (date) {
-//       getBookedSlots();
-//     }
-//   }, [date]);
+  useEffect(() => {
+    if (date) {
+      getBookedSlots();
+    }
+  }, [date]);
   return (
     doctor && (
       <div className="bg-white p-2">
@@ -228,7 +230,7 @@ function BookAppointment() {
                 >
                   Cancel
                 </button>
-                <button className="contained-btn" >
+                <button className="contained-btn" onClick={onBookAppointment}>
                   Book Appointment
                 </button>
               </div>
