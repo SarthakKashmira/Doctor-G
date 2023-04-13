@@ -225,8 +225,9 @@ export default function DoctorForm() {
                 {[
                   "Monday",
                   "Tuesday",
-                  "Friday",
+                  "Wednesday",
                   "Thursday",
+                  "Friday",
                   "Saturday",
                   "Sunday",
                 ].map((day, i) => (
