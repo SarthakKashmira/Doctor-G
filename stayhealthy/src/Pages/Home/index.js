@@ -2,7 +2,7 @@ import { Col, message, Row } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { GetAllDoctors } from "../../apicalls/doctors";
+import { GetAllDoctors,GetallDoctors } from "../../apicalls/doctors";
 import { showLoader } from "../../redux/loaderReducer";
 
 function Home() {
@@ -12,7 +12,7 @@ function Home() {
   const getData = async () => {
     try {
       dispatch(showLoader(true));
-      const response = await GetAllDoctors();
+      const response = await GetallDoctors();
       if (response.success) {
         setDoctors(response.data);
       } else {

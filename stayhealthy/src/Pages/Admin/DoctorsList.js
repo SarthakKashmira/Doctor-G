@@ -87,6 +87,7 @@ function DoctorsList() {
                     changeStatus({
                       ...record,
                       status: "rejected",
+                      
                     })
                   }
                 >
@@ -98,6 +99,7 @@ function DoctorsList() {
                     changeStatus({
                       ...record,
                       status: "approved",
+                      
                     })
                   }
                 >
@@ -116,6 +118,8 @@ function DoctorsList() {
                     changeStatus({
                       ...record,
                       status: "blocked",
+                      
+
                     })
                   }
                 >
@@ -134,6 +138,7 @@ function DoctorsList() {
                     changeStatus({
                       ...record,
                       status: "approved",
+                      
                     })
                   }
                 >

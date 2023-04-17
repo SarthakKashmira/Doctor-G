@@ -3,9 +3,11 @@ import { Col, Form, Row, message } from "antd";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { showLoader } from "../redux/loaderReducer";
-import { AddDoctor, CheckDoctorAlreadyApplied } from "../apicalls/doctors";
+import { AddDoctor, CheckDoctorAlreadyApplied ,UpdateDoctor } from "../apicalls/doctors";
 
 export default function DoctorForm() {
+  const [form] = Form.useForm();
+  const [alreadyApproved, setAlreadyApproved] = React.useState(false);
   const [days, setDays] = useState([]);
   const [AlreadyApplied, setAlreadyApplied] = useState(false);
   const dispatch = useDispatch();
@@ -20,7 +22,14 @@ export default function DoctorForm() {
         status: "pending",
         role: "doctor"
       };
-      const response = await AddDoctor(payload);
+      let response = null;
+      if (alreadyApproved) {
+        payload.id = JSON.parse(localStorage.getItem("user")).id;
+        payload.status = "approved";
+        response = await UpdateDoctor(payload);
+      } else {
+        response = await AddDoctor(payload);
+      }
       if (response.success) {
         message.success(response.message);
         navigate("/profile");
@@ -39,7 +48,16 @@ export default function DoctorForm() {
       const response = await CheckDoctorAlreadyApplied(
         JSON.parse(localStorage.getItem('user')).id
       );
-      if (response.success) setAlreadyApplied(true);
+      if (response.success) {
+        setAlreadyApplied(true);
+        if (response.data.status === "approved") {
+          setAlreadyApproved(true);
+          form.setFieldsValue(response.data);
+          setDays(response.data.days);
+        }
+      } else {
+        setAlreadyApplied(false);
+      }
       dispatch(showLoader(false));
     } catch (error) {
       dispatch(showLoader(false));
@@ -51,12 +69,12 @@ export default function DoctorForm() {
   }, []);
   return (
     <div className="bg-white p-2">
-      {!AlreadyApplied && (
+      {(!AlreadyApplied || alreadyApproved)&& (
         <>
-          <h3 className="uppercase">Apply for a doctor Account</h3>
+          <h3 className="uppercase">{alreadyApproved ? "Update your information" : "Apply as a doctor"}</h3>
           <hr />
           {/* personal info */}
-          <Form layout="vertical" className="my-1" onFinish={onFinish}>
+          <Form layout="vertical" className="my-1" onFinish={onFinish}  form={form}>
             <Row gutter={[16, 16]}>
               <Col span={24}>
                 <h4 className="uppercase">
@@ -234,6 +252,7 @@ export default function DoctorForm() {
                   <div className="flex items-center" key={i}>
                     <input
                       type="checkbox"
+                      checked={days.includes(day)}
                       value={day}
                       onChange={(e) => {
                         if (e.target.checked) {
@@ -259,7 +278,7 @@ export default function DoctorForm() {
           </Form>
         </>
       )}
-      {AlreadyApplied &&(
+      {AlreadyApplied && !alreadyApproved &&(
         <div className="flex flex-col item-center gap-2">
           <h3 className="text-secondary">
             You have already applied for this Doctor account please wait for admin for approval

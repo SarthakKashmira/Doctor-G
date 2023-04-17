@@ -15,4 +15,4 @@ export const loaderSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const {showLoader } = loaderSlice.actions
+export const { showLoader } = loaderSlice.actions

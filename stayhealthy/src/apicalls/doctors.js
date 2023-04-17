@@ -19,11 +19,17 @@ export const CheckDoctorAlreadyApplied=async(id)=>{
     const doctors=await getDocs(
       query(collection(firestoreDatabase,'doctors'),where("userId","==",id))
     );
-    if(doctors.size>0){
-      return{
-        success:true,
-        message:"Doctor account already applied"
-      }
+    if (doctors.size > 0) {
+      return {
+        success: true,
+        message: "Doctor account already applied",
+        data : doctors.docs.map((doc) => {
+          return {
+            ...doc.data(),
+            id: doc.id,
+          };
+        })[0]
+      };
     }
     return{
       success:false,
@@ -40,6 +46,27 @@ export const CheckDoctorAlreadyApplied=async(id)=>{
 export const GetAllDoctors = async () => {
   try {
     const doctors = await getDocs(collection(firestoreDatabase, "doctors"));
+    return {
+      success: true,
+      data: doctors.docs.map((doc) => {
+        return {
+          ...doc.data(),
+          id: doc.id,
+        };
+      }),
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};
+export const GetallDoctors = async () => {
+  try {
+    const doctors = await getDocs(
+      query(collection(firestoreDatabase,'doctors'),where("status","==","approved"))
+    );
     return {
       success: true,
       data: doctors.docs.map((doc) => {
