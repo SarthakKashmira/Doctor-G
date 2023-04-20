@@ -9,16 +9,21 @@ body,html{
     padding:0;
     box-sizing:border-box;
     font-family:'Montserrat',sans-serif !important;
-   
   }
   
 
 /*colors and background*/
 .bg-white{
   background-color:#fff;
+  border-radius: 2px !important;
+  border:1px #d3d2d2;
 }
-
-
+.bg-primary{
+  color:#0EA293 !important;
+}
+.bg-secondary{
+  color:#A9907E !important;
+}
 
 /*flex-classes*/
 .flex{
@@ -33,13 +38,18 @@ body,html{
 .items-center{
   align-items:center;
 }
-
+.justify-between{
+  justify-content: space-between;
+}
 /*heights and widths*/
 .h-screen{
   height:100vh;
 }
 .w-400{
   width:400px;
+}
+.w-full{
+  width:100%;
 }
 .p-1{
   padding: 10px;
@@ -71,7 +81,16 @@ margin-bottom:10px;}
     margin-bottom:10px;}
 .my-3{margin-top:10px;
         margin-bottom:10px;}
-  
+/* gaps */
+.gap-1{
+    gap: 10px;
+}
+.gap-2{
+    gap: 20px;
+}
+.gap-3{
+    gap: 30px;
+}
 /*form elements*/
 input{
   height:45px !important;
@@ -90,7 +109,7 @@ input:focus{
   background-color: black!important;
   color:white;
   text-transform:uppercase;
-  width:100%;
+  padding: 0 20px;
 }
 .outlined-btn{
   height:45px !important;
@@ -99,6 +118,7 @@ input:focus{
   color:black;
   text-transform:uppercase;
   border:1px solid black!important;
+  padding: 0 20px;
 }
 /*text classes*/
 .text-center{
@@ -114,7 +134,27 @@ input:focus{
 .color{
   color:rgb(75, 74, 74)!important;
 }
+.text-primary{
+    color:#0EA293
+}
+.text-secondary{
+    color:#A9907E
+}
+.cursor-pointer{
+    cursor: pointer;
+}
 /*antd overriding*/
 .ant-form-item{
   margin-bottom:10px !important;
+}
+
+/* spinner */
+.spinner-parent{
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  background-color:rgba(0, 0, 0, 0.68);
+  z-index: 999;
 }
